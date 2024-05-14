@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<div class="container container-tight py-4">
+    <div class="text-center mb-4">
+        <a href="." class="navbar-brand navbar-brand-autodark">
+            <h1 class="h1 text-primary text-center">KPGD</h1>
+        </a>
+    </div>
+    <div class="card card-md">
+        <div class="card-body">
+            <h2 class="h2 text-center mb-4">Login to your account</h2>
+            <form action="javascript:void(0);" onsubmit="submitForm();" id="formLogin" autocomplete="off" novalidate>
+                <div class="mb-3">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Your email@mail" autocomplete="off">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label" for="password">
+                        Password
+                    </label>
+                    <div class="input-group input-group-flat">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Your password" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary w-100" id="btnLogin">Sign in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script>
+
+        function submitForm() {
+            var formData = new FormData(document.getElementById('formLogin'));
+
+            $('#btnLogin').prop('disabled', true);
+            $('#btnLogin').text('Loading');
+
+            fetch('/Login/Login', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.Remarks) {
+                        window.location.href = "/"
+                    } else {
+
+                        console.log(data.Message)
+
+                        $('#errorMessage').text(data.Message);
+                        $('#error-modal').modal('show');
+                        $('#btnLogin').prop('disabled', false);
+                        $('#btnLogin').text('Sign in');
+                    }
+
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+                    $('#errorMessage').html(error);
+                    $('#error-modal').modal('show');
+                    $('#btnLogin').prop('disabled', false);
+                    $('#btnLogin').text('Sign in');
+                });
+        }
+
+    </script>
+}

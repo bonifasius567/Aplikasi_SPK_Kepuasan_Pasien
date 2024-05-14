@@ -1,0 +1,124 @@
+﻿@model Aplikasi_SPK_Kepuasan_Pasien.ViewModels.VMKriteria
+
+@{
+    ViewBag.Title = "Survey";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<div class="container container-narrow py-2">
+    <div class="text-center mb-4">
+        <a href="/" class="navbar-brand navbar-brand-autodark">
+            <h1 class="h1 text-primary text-center">KPGD<br /><span class="h3 text-gray">Survey kepuasan pasien penanganan gawat darurat di Rumah Sakit Umum Chasan Boesoirie Ternate</span></h1>
+                                                             
+        </a>
+    </div>
+    <div class="card card-md">
+        <form class="card-body" action="javascript:void(0);" onsubmit="submitForm();" id="formUser" autocomplete="off" novalidate>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-2">
+                        <label class="form-label" for="name">Nama</label>
+                        <input type="text" class="form-control" name="name" id="name" value="" />
+                        <input type="number" name="id" id="id" value="" hidden />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" for="diagnosa">Diagnosa Penyakit</label>
+                        <input type="text" class="form-control" name="diagnosa" id="diagnosa" value="" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" for="status_rawat">Status Rawat</label>
+                        <input type="text" class="form-control" name="status_rawat" id="status_rawat" value="" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" for="no_hp">No HP</label>
+                        <input type="number" class="form-control" name="no_hp" id="no_hp" value="" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" for="jk">Jenis Kelamain</label>
+                        <div>
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="jk" value="L">
+                                <span class="form-check-label">Laki-Laki</span>
+                            </label>
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="jk" value="P">
+                                <span class="form-check-label">Perempuan</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" for="alamat">Alamat</label>
+                        <textarea name="alamat" id="alamat" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    @foreach (var item in Model.Kriterias)
+                    {
+                        <div class="mb-2">
+                            <label class="form-label" for="@item.ID">@item.KRITERIA</label>
+                            <select class="tomselected" id="@item.ID" name="@item.ID" placeholder="Select an item...">
+                                <option value=""></option>
+                                @foreach (var detail in Model.KriteriaDetails)
+                                {
+                                    if (detail.ID_KRITERIA == item.ID)
+                                    {
+                                        <option value="@detail.NILAI">@detail.DETAIL</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary" value="insert" id="btnSubmit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const selects = document.querySelectorAll('.tomselected');
+
+            selects.forEach(function (select) {
+                new TomSelect(select, {
+                    sortField: []
+                });
+            });
+        });
+
+        function submitForm() {
+            const form = document.getElementById('formUser');
+
+            const formData = new FormData(form);
+
+            fetch('/Home/InsertAlternative', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.Remarks) {
+                        window.location.href = "/Home/Thanks";
+                    } else {
+
+                        $('#errorMessage').text(data.Message);
+                        $('#error-modal').modal('show');
+                    }
+
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+                    $('#errorMessage').text(error);
+                    $('#error-modal').modal('show');
+                });
+        }
+
+    </script>
+}

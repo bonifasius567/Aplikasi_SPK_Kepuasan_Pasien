@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DB_SPK_KPGD" Class="DB_SPK_KPGDDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.TBL_T_LOGIN" Member="TBL_T_LOGINs">
+    <Type Name="TBL_T_LOGIN">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="nama" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="tanggal_lahir" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="alamat" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TBL_M_KRITERIA" Member="TBL_M_KRITERIAs">
+    <Type Name="TBL_M_KRITERIA">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="KRITERIA" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SIFAT" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="BOBOT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="TBL_M_KRITERIA_TBL_M_KRITERIA_DETAIL" Member="TBL_M_KRITERIA_DETAILs" ThisKey="ID" OtherKey="ID_KRITERIA" Type="TBL_M_KRITERIA_DETAIL" />
+      <Association Name="TBL_M_KRITERIA_TBL_T_KRITERIA" Member="TBL_T_KRITERIAs" ThisKey="ID" OtherKey="ID_KRITERIA" Type="TBL_T_KRITERIA" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TBL_M_KRITERIA_DETAIL" Member="TBL_M_KRITERIA_DETAILs">
+    <Type Name="TBL_M_KRITERIA_DETAIL">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ID_KRITERIA" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DETAIL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="NILAI" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="TBL_M_KRITERIA_TBL_M_KRITERIA_DETAIL" Member="TBL_M_KRITERIA" ThisKey="ID_KRITERIA" OtherKey="ID" Type="TBL_M_KRITERIA" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TBL_T_HASIL" Member="TBL_T_HASILs">
+    <Type Name="TBL_T_HASIL">
+      <Column Name="ID_ALTERNATIVE" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TOTAL_NILAI" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="TBL_M_ALTERNATIVE_TBL_T_HASIL" Member="TBL_M_ALTERNATIVE" ThisKey="ID_ALTERNATIVE" OtherKey="ID" Type="TBL_M_ALTERNATIVE" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TBL_T_KRITERIA" Member="TBL_T_KRITERIAs">
+    <Type Name="TBL_T_KRITERIA">
+      <Column Name="ID_KRITERIA" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID_ALTERNATIVE" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NILAI_KRITERIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="TBL_M_KRITERIA_TBL_T_KRITERIA" Member="TBL_M_KRITERIA" ThisKey="ID_KRITERIA" OtherKey="ID" Type="TBL_M_KRITERIA" IsForeignKey="true" />
+      <Association Name="TBL_M_ALTERNATIVE_TBL_T_KRITERIA" Member="TBL_M_ALTERNATIVE" ThisKey="ID_ALTERNATIVE" OtherKey="ID" Type="TBL_M_ALTERNATIVE" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_NILAI_KRITERIA" Member="VW_NILAI_KRITERIAs">
+    <Type Name="VW_NILAI_KRITERIA">
+      <Column Name="ID_KRITERIA" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ID_ALTERNATIVE" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NILAI_KRITERIA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NAMA" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="JENIS_KELAMIN" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="ALAMAT" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_REKOMENDASI_SAW" Member="VW_REKOMENDASI_SAWs">
+    <Type Name="VW_REKOMENDASI_SAW">
+      <Column Name="ID_ALTERNATIVE" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TOTAL_NILAI" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="NAMA" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="JENIS_KELAMIN" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="Rank" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TBL_M_ALTERNATIVE" Member="TBL_M_ALTERNATIVEs">
+    <Type Name="TBL_M_ALTERNATIVE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NAMA" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="JENIS_KELAMIN" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="ALAMAT" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="DIAGNOSA" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="STATUS_RAWAT" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="NO_HP" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="TBL_M_ALTERNATIVE_TBL_T_HASIL" Member="TBL_T_HASIL" ThisKey="ID" OtherKey="ID_ALTERNATIVE" Type="TBL_T_HASIL" Cardinality="One" />
+      <Association Name="TBL_M_ALTERNATIVE_TBL_T_KRITERIA" Member="TBL_T_KRITERIAs" ThisKey="ID" OtherKey="ID_ALTERNATIVE" Type="TBL_T_KRITERIA" />
+    </Type>
+  </Table>
+</Database>

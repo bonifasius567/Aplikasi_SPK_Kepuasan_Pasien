@@ -1,0 +1,269 @@
+﻿@model Aplikasi_SPK_Kepuasan_Pasien.ViewModels.VMKriteria
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="page-header d-print-none text-white">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                    Overview
+                </div>
+                <h2 class="page-title">
+                    Kepuasan Pasien dalam penanganan gawat darurat di rumah sakit umum Chasan Boesoirie Ternate
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    <a href="/Home/Survey" target="_blank" class="btn btn-primary d-none d-sm-inline-block">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        Link Survey
+                    </a>
+                    <a href="/Home/Survey" target="_blank" class="btn btn-primary d-sm-none btn-icon">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page body -->
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="subheader">Pasien Dengan Kepuasan Penanganan Medis Tertinggi</div>
+                        <div class="h2 m-0" id="namaRekomedasi"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="subheader">Total Survei Pasien</div>
+                        <div class="h2 m-0"><span id="totalCalon">0</span> Orang</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Table Rekomendasi</h3>
+                    </div>
+                    <div class="card-body border-bottom py-3">
+                        <div class="table-responsive mt-5">
+                            <table class="table table-hover w-100" id="tableRekomendasi">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>NAMA</th>
+                                        <th>JENIS KELAMIN</th>
+                                        <th>TOTAL Point</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <div class="modal modal-blur fade" id="modalUsers" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <form class="modal-content" action="javascript:void(0);" onsubmit="submitForm();" id="formUser" autocomplete="off" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="tModal">Create</span> New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label class="form-label" for="name">Nama</label>
+                                <input type="text" class="form-control" name="name" id="name" value="" />
+                                <input type="number" name="id" id="id" value="" hidden />
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="jk">Jenis Kelamain</label>
+                                <div>
+                                    <label class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jk" value="L">
+                                        <span class="form-check-label">Laki-Laki</span>
+                                    </label>
+                                    <label class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jk" value="P">
+                                        <span class="form-check-label">Perempuan</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="alamat">Alamat</label>
+                                <textarea name="alamat" id="alamat" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
+                            @foreach (var item in Model.Kriterias)
+                            {
+                                <div class="mb-2">
+                                    <label class="form-label" for="@item.ID">@item.KRITERIA</label>
+                                    <select class="tomselected" id="@item.ID" name="@item.ID" placeholder="Select an item...">
+                                        <option value=""></option>
+                                        @foreach (var detail in Model.KriteriaDetails)
+                                        {
+                                            if (detail.ID_KRITERIA == item.ID)
+                                            {
+                                                <option value="@detail.NILAI">@detail.DETAIL</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" value="insert" id="btnSubmit">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const selects = document.querySelectorAll('.tomselected');
+
+            selects.forEach(function (select) {
+                new TomSelect(select, {
+                    sortField: []
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $('#modalUsers').on('hidden.bs.modal', function () {
+                $('#formUser').trigger('reset');
+
+                document.querySelectorAll('.tomselected').forEach(function (selectElement) {
+                    const tomSelectInstance = selectElement.tomselect;
+
+                    if (tomSelectInstance) {
+                        tomSelectInstance.clear();
+                    }
+                });
+
+                $('#btnSubmit').val('insert');
+                $('#tModal').text('Create');
+                $('#btnSubmit').text('Add User');
+            });
+        });
+
+        var table = $('#tableRekomendasi').DataTable({
+            ajax: {
+                url: `/Home/GetListRekomedasi`,
+                dataSrc: 'Data',
+            },
+            "scrollX": true,
+            processing: true,
+            columns: [
+                { data: 'Rank'},
+                { data: 'NAMA' },
+                { data: 'JENIS_KELAMIN' },
+                {
+                    data: 'TOTAL_NILAI',
+                    render: function (data, type, row) {
+                        return data.toFixed(2);
+                    },
+                },
+                {
+                    data: 'ID_ALTERNATIVE',
+                    render: function (data, type, row) {
+                        const action = `<div class="btn-group w-100" role="group">
+                                <button onclick="deleteUser(this.value)" value="${data}" class="btn btn-danger">Delete</button>
+                            </div>`
+                        return action;
+                    },
+                },
+            ],
+            rowCallback: function (row, data) {
+                if (data['Rank'] === 1) {
+                    $(row).addClass('table-success');
+                    ShowRekomdasi('namaRekomedasi', data['NAMA'] )
+                } else {
+                    $(row).removeClass('table-success');
+                }
+            }
+        })
+
+        table.on('draw', function () {
+            if (table && typeof table.data === 'function') {
+                var totalRowCount = table.data().length;
+
+                $('#totalCalon').text(totalRowCount);
+            } else {
+                console.error('Error: DataTable instance or data() method not available.');
+            }
+        });
+
+        
+        function deleteUser(id) {
+            $.ajax({
+                url: '/Home/DeleteAlternative',
+                type: 'POST',
+                data: { id: id },
+                success: function (data) {
+                    // Check if the Remarks flag is true
+                    if (data.Remarks === true) {
+                        $('#successMessage').text(data.Message);
+                        $('#success-modal').modal('show');
+                        $('#namaRekomedasi').text('');
+
+                        table.ajax.reload();
+                    }
+                    // Check if the Remarks flag is false
+                    else if (data.Remarks === false) {
+                        $('#errorMessage').text(data.Message);
+                        $('#error-modal').modal('show');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX error:", error);
+                    console.error("XHR status:", status);
+                    console.error("Response text:", xhr.responseText);
+
+                    $('#errorMessage').text("An error occurred while processing your request.");
+                    $('#error-modal').modal('show');
+                }
+            });
+        }
+
+        function ShowRekomdasi(spanId, newText) {
+            var $span = $('#' + spanId);
+            var existingText = $span.text();
+
+            if (existingText.trim() !== '') {
+                $span.append(', ' + newText);
+            } else {
+                $span.append(newText);
+            }
+        }
+
+    </script>
+
+}

@@ -1,0 +1,273 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header d-print-none text-white">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                    Dashboard
+                </div>
+                <h2 class="page-title">
+                    Setting Pengguna aplikasi KPGD
+                </h2>
+            </div>
+            <!-- Page title actions -->
+            <div class="col-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modalUsers">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        Create new
+                    </a>
+                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modalUsers" aria-label="Create new report">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Table Rekomendasi</h3>
+                    </div>
+                    <div class="card-body border-bottom py-3">
+                        <div class="table-responsive mt-5">
+                            <table class="table table-hover w-100" id="tableUser">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>NAMA</th>
+                                        <th>EMAIL</th>
+                                        <th>TANGGAL LAHIR</th>
+                                        <th>ALAMAT</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <div class="modal modal-blur fade" id="modalUsers" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <form class="modal-content" action="javascript:void(0);" onsubmit="submitForm();" id="formUser" autocomplete="off" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title"><span id="tModal">Create</span> New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <input type="number" name="id" id="id" value="" hidden />
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label class="form-label" for="nama">Nama</label>
+                                <input type="text" class="form-control" name="nama" id="nama" value="" />
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="alamat">Alamat</label>
+                                <textarea name="alamat" id="alamat" class="form-control"></textarea>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="tanggal_lahir">Tanggal Lahir</label>
+                                <input type="date" class="form-control" name="tanggal_lahir" id="tanggal_lahir" value="" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="email" class="form-control" name="email" id="email" value="" />
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="password">Password</label>
+                                <input type="password" class="form-control" name="password" id="password" value="" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" value="insert" id="btnSubmit">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#modalUsers').on('hidden.bs.modal', function () {
+                $('#formUser').trigger('reset');
+                $('#btnSubmit').val('insert');
+                $('#tModal').text('Create');
+                $('#btnSubmit').text('Add User');
+            });
+        });
+
+
+        var table = $('#tableUser').DataTable({
+            ajax: {
+                url: `/Setting/GetUsers`,
+                dataSrc: 'Data',
+            },
+            "scrollX": true,
+            processing: true,
+            columns: [
+                {
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1
+                    },
+                },
+                { data: 'nama' },
+                { data: 'email' },
+                {
+                    data: 'tanggal_lahir',
+                    render: function (data, type, row) {
+
+                        return formatDate(data);
+                    }
+                },
+                { data: 'alamat' },
+                {
+                    data: 'id',
+                    render: function (data, type, row) {
+                        const action = `<div class="btn-group w-100" role="group">
+                            <button onclick="editUser(this.value)" value="${data}" class="btn btn-info">Edit</button>
+                                <button onclick="deleteUser(this.value)" value="${data}" class="btn btn-danger">Delete</button>
+                            </div>`
+                        return action;
+                    },
+                },
+            ],
+        })
+
+        function formatDate(jsonDate) {
+            const timestamp = parseInt(jsonDate.match(/Date\((\d+)\)/)[1]);
+
+            const date = new Date(timestamp);
+
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+
+            const formattedDate = `${year}-${month}-${day}`;
+
+            return formattedDate;
+        }
+
+        function editUser(id) {
+            $.ajax({
+                url: '/Setting/GetUser?id=' + id,
+                type: 'GET',
+                success: function (data) {
+                    var user = data.Data;
+
+                    $('#id').val(Number(user.id));
+                    $('#nama').val(user.nama)
+                    $('#alamat').val(user.alamat)
+                    $('#tanggal_lahir').val(formatDate(user.tanggal_lahir))
+                    $('#email').val(user.email)
+                    $('#password').val(user.password)
+                    $('#btnSubmit').val('update');
+
+                    $('#tModal').text('Update');
+                    $('#btnSubmit').text('Update User');
+                    $('#modalUsers').modal('show');
+                },
+                error: function (xhr, status, error) {
+                    // Log error information for debugging purposes
+                    console.error("AJAX error:", error);
+                    console.error("XHR status:", status);
+                    console.error("Response text:", xhr.responseText);
+
+                }
+            });
+        }
+
+        function submitForm() {
+            const form = document.getElementById('formUser');
+
+            var url = $('#btnSubmit').val() == "insert" ? '/Setting/InsertUser' : '/Setting/UpdateUser'
+
+            const formData = new FormData(form);
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.Remarks === true) {
+
+                        $('#successMessage').text(data.Message);
+                        $('#success-modal').modal('show');
+
+                        $('#modalUsers').modal('hide');
+                        table.ajax.reload();
+                    }
+                    else if (data.Remarks === false) {
+                        $('#errorMessage').text(data.Message);
+                        $('#error-modal').modal('show');
+
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+                    $('#errorMessage').text(error);
+                    $('#error-modal').modal('show');
+                });
+        }
+
+        function deleteUser(id) {
+            $.ajax({
+                url: '/Setting/DeleteUser',
+                type: 'POST',
+                data: { id: id },
+                success: function (data) {
+                    // Check if the Remarks flag is true
+                    if (data.Remarks === true) {
+                        $('#successMessage').text(data.Message);
+                        $('#success-modal').modal('show');
+
+                        table.ajax.reload();
+                    }
+                    // Check if the Remarks flag is false
+                    else if (data.Remarks === false) {
+                        $('#errorMessage').text(data.Message);
+                        $('#error-modal').modal('show');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX error:", error);
+                    console.error("XHR status:", status);
+                    console.error("Response text:", xhr.responseText);
+
+                    $('#errorMessage').text("An error occurred while processing your request.");
+                    $('#error-modal').modal('show');
+                }
+            });
+        }
+    </script>
+}

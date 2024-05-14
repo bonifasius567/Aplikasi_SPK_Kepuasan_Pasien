@@ -1,0 +1,79 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>@ViewBag.Title - KPGD</title>
+    <!-- CSS files -->
+    <link href="~/Content/dist/libs/tom-select/tom-select.css" rel="stylesheet" />
+    <link href="~/Content/dist/css/tabler.min.css?1684106062" rel="stylesheet" />
+
+    <style>
+        @@import url('../../content/inter.css');
+
+        :root {
+            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+        }
+
+        body {
+            font-feature-settings: "cv03", "cv04", "cv11";
+        }
+    </style>
+
+</head>
+<body class=" d-flex flex-column">
+    <script>
+    (function (factory) {
+            typeof define === 'function' && define.amd ? define(factory) :
+                factory();
+        })((function () {
+            'use strict';
+
+            const storedTheme = localStorage.getItem('theme');
+            const currentTheme = storedTheme || 'light';
+            document.body.setAttribute('data-bs-theme', currentTheme);
+
+        }));</script>
+
+    <div class="page page-center">
+        @RenderBody()
+    </div>
+
+    <div class="modal modal-blur fade" id="error-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-danger"></div>
+                <div class="modal-body text-center py-4">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
+                    <h3>Sign in error</h3>
+                    <div class="text-muted" id="errorMessage"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <div class="col">
+                                <a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                                    Continue
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Libs JS -->
+    <!-- Tabler Core -->
+    <script src="~/Scripts/jquery-3.7.1.min.js"></script>
+    <script src="~/Content/dist/js/tabler.min.js?1684106062" defer></script>
+    <script src="~/Content/dist/libs/tom-select/tom-select.complete.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>
