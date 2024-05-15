@@ -6,44 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>@ViewBag.Title - KPGD</title>
     <!-- CSS files -->
-    <link href="~/Content/dist/libs/tom-select/tom-select.css" rel="stylesheet" />
-    <link href="~/Content/dist/css/tabler.min.css?1684106062" rel="stylesheet" />
-
-    <style>
-        @@import url('../../content/inter.css');
-
-        :root {
-            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-        }
-
-        body {
-            font-feature-settings: "cv03", "cv04", "cv11";
-        }
-    </style>
+    <link rel="shortcut icon" type="image/png" href="~/Content/assets/images/lkpgd.ico" />
+    <link href="~/Content/assets/libs/tom-select/tom-select.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/assets/css/styles.min.css" />
 
 </head>
 <body class=" d-flex flex-column">
-    <script>
-    (function (factory) {
-            typeof define === 'function' && define.amd ? define(factory) :
-                factory();
-        })((function () {
-            'use strict';
-
-            const storedTheme = localStorage.getItem('theme');
-            const currentTheme = storedTheme || 'light';
-            document.body.setAttribute('data-bs-theme', currentTheme);
-
-        }));</script>
-
-    <div class="page page-center">
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+         data-sidebar-position="fixed" data-header-position="fixed">
         @RenderBody()
     </div>
 
     <div class="modal modal-blur fade" id="error-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="p-2 btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 <div class="modal-status bg-danger"></div>
                 <div class="modal-body text-center py-4">
                     <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
@@ -68,9 +45,9 @@
 
     <!-- Libs JS -->
     <!-- Tabler Core -->
-    <script src="~/Scripts/jquery-3.7.1.min.js"></script>
-    <script src="~/Content/dist/js/tabler.min.js?1684106062" defer></script>
-    <script src="~/Content/dist/libs/tom-select/tom-select.complete.min.js"></script>
+    <script src="~/Content/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/Content/assets/libs/tom-select/tom-select.complete.min.js"></script>
+    <script src="~/Content/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     @RenderSection("scripts", required: false)
 

@@ -9,12 +9,12 @@
         <div class="row g-2 align-items-center">
             <div class="col">
                 <!-- Page pre-title -->
-                <div class="page-pretitle">
+                <p class="page-pretitle text-decoration-underline">
                     Overview
-                </div>
-                <h2 class="page-title">
+                </p>
+                <h5 class="mb-4 page-title ">
                     Kepuasan Pasien dalam penanganan gawat darurat di rumah sakit umum Chasan Boesoirie Ternate
-                </h2>
+                </h5>
             </div>
             <!-- Page title actions -->
             <div class="col-auto ms-auto d-print-none">
@@ -41,7 +41,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="subheader">Pasien Dengan Kepuasan Penanganan Medis Tertinggi</div>
-                        <div class="h2 m-0" id="namaRekomedasi"></div>
+                        <div class="h4 m-0" id="namaRekomedasi"></div>
                     </div>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="subheader">Total Survei Pasien</div>
-                        <div class="h2 m-0"><span id="totalCalon">0</span> Orang</div>
+                        <div class="h4 m-0"><span id="totalCalon">0</span> Orang</div>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
             <form class="modal-content" action="javascript:void(0);" onsubmit="submitForm();" id="formUser" autocomplete="off" novalidate>
                 <div class="modal-header">
                     <h5 class="modal-title"><span id="tModal">Create</span> New User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="p-2 btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -146,7 +146,7 @@
 
     <script>
 
-        document.addEventListener("DOMContentLoaded", function () {
+        /*document.addEventListener("DOMContentLoaded", function () {
             const selects = document.querySelectorAll('.tomselected');
 
             selects.forEach(function (select) {
@@ -154,7 +154,7 @@
                     sortField: []
                 });
             });
-        });
+        });*/
 
         $(document).ready(function () {
             $('#modalUsers').on('hidden.bs.modal', function () {
